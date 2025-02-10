@@ -20,4 +20,10 @@ public class GlobalExceptionHandler {
         log.error("业务异常：{}", e.getMessage());
         return Result.error(e.getMessage());
     }
+
+    @ExceptionHandler(LoginFailedException.class)
+    public Result<String> handleLoginFailedException(LoginFailedException e) {
+        log.error("登录失败：{}", e.getMessage());
+        return Result.error(e.getMessage());
+    }
 }
