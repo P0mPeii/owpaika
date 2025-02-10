@@ -11,6 +11,8 @@ import com.owpai.pojo.vo.UserVO;
 import com.owpai.server.mapper.UserMapper;
 import com.owpai.server.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -59,7 +61,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException("账号已被禁用");
         }
 
-        // 4.返回token（这里简单返回用户id，实际项目中应该使用JWT等token）
+        // 4.判断是否为管理员登录
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        String requestPath = attributes.getRequest().getRequestURI();
+        if (requestPath.startsWith("/admin") && user.getRole() != 1) {
+            throw new BusinessException("无权限访问管理端");
+        }
+
+        // 5.返回token（这里简单返回用户id，实际项目中应该使用JWT等token）
         return user.getId().toString();
     }
 

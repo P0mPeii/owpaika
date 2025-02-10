@@ -1,9 +1,11 @@
 package com.owpai.server.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.owpai.pojo.dto.UserDTO;
+import com.owpai.pojo.entity.User;
 import com.owpai.pojo.vo.UserVO;
 
-public interface UserService {
+public interface UserService extends IService<User> {
     /**
      * 用户注册
      */

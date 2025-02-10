@@ -17,6 +17,7 @@ public class User {
     private String email;
     private String phone;
     private Integer status;
+    private Integer role;
     @TableLogic
     private Integer isDeleted;
     private LocalDateTime createTime;
