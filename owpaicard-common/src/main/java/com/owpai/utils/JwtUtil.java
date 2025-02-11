@@ -9,25 +9,29 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * JWT工具类
+ * 用于生成和解析JWT令牌
+ */
 public class JwtUtil {
     /**
-     * 生成jwt
-     * 使用Hs256算法, 私匙使用固定秘钥
+     * 生成JWT令牌
+     * 使用HS256算法和提供的密钥生成JWT令牌
      *
-     * @param secretKey jwt秘钥
-     * @param ttlMillis jwt过期时间(毫秒)
-     * @param claims    设置的信息
-     * @return
+     * @param secretKey JWT密钥，用于签名
+     * @param ttlMillis JWT令牌的有效期（毫秒）
+     * @param claims    需要在JWT中存储的信息（载荷）
+     * @return 生成的JWT令牌字符串
      */
     public static String createJWT(String secretKey, long ttlMillis, Map<String, Object> claims) {
-        // 指定签名的时候使用的签名算法，也就是header那部分
+        // 指定签名算法为HS256
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-        // 生成JWT的时间
+        // 计算令牌过期时间
         long expMillis = System.currentTimeMillis() + ttlMillis;
         Date exp = new Date(expMillis);
 
-        // 确保密钥长度至少为256位（32字节）
+        // 确保密钥长度至少为256位（32字节），不足则补齐
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         if (keyBytes.length < 32) {
             byte[] newKey = new byte[32];
@@ -35,27 +39,29 @@ public class JwtUtil {
             keyBytes = newKey;
         }
 
-        // 设置jwt的body
+        // 构建JWT令牌
         JwtBuilder builder = Jwts.builder()
-                // 如果有私有声明，一定要先设置这个自己创建的私有的声明，这个是给builder的claim赋值，一旦写在标准的声明赋值之后，就是覆盖了那些标准的声明的
+                // 设置载荷部分，包含自定义信息
                 .setClaims(claims)
-                // 设置签名使用的签名算法和签名使用的秘钥
+                // 使用指定的签名算法和密钥进行签名
                 .signWith(Keys.hmacShaKeyFor(keyBytes), signatureAlgorithm)
                 // 设置过期时间
                 .setExpiration(exp);
 
+        // 生成JWT字符串
         return builder.compact();
     }
 
     /**
-     * Token解密
+     * 解析JWT令牌
+     * 使用密钥验证JWT令牌的签名并解析其内容
      *
-     * @param secretKey jwt秘钥 此秘钥一定要保留好在服务端, 不能暴露出去, 否则sign就可以被伪造, 如果对接多个客户端建议改造成多个
-     * @param token     加密后的token
-     * @return
+     * @param secretKey JWT密钥，用于验证签名
+     * @param token     需要解析的JWT令牌字符串
+     * @return JWT中的载荷信息（Claims）
      */
     public static Claims parseJWT(String secretKey, String token) {
-        // 确保密钥长度至少为256位（32字节）
+        // 确保密钥长度至少为256位（32字节），不足则补齐
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         if (keyBytes.length < 32) {
             byte[] newKey = new byte[32];
@@ -63,11 +69,11 @@ public class JwtUtil {
             keyBytes = newKey;
         }
 
-        // 得到DefaultJwtParser
+        // 解析JWT令牌
         Claims claims = Jwts.parser()
-                // 设置签名的秘钥
+                // 设置验证签名的密钥
                 .setSigningKey(Keys.hmacShaKeyFor(keyBytes))
-                // 设置需要解析的jwt
+                // 解析JWT字符串
                 .parseClaimsJws(token).getBody();
         return claims;
     }

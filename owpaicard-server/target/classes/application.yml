@@ -41,12 +41,12 @@ mybatis-plus:
 # JWT配置
 sky:
   jwt:
-    # 设置jwt签名加密时使用的秘钥（至少32字符）
-    admin-secret-key: itcast_admin_secret_key_must_be_32_chars
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: itcast
     # 设置jwt过期时间
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
-    user-secret-key: owpai_user_secret_key_must_be_32_chars
+    user-secret-key: owpai
     user-ttl: 7200000
     user-token-name: authentication

@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 管理员控制器
+ * 处理管理员相关的请求，包括登录认证等
+ */
 @RestController
 @RequestMapping("/admin")
 @Slf4j
@@ -29,19 +33,39 @@ public class AdminController {
     @Autowired
     private JwtProperties jwtProperties;
 
-    // 微信登录
+    /**
+     * 管理员登录
+     * 验证管理员身份并生成JWT令牌
+     *
+     * @param adminLoginDTO 登录信息传输对象
+     * @return 登录结果，包含JWT令牌和管理员信息
+     */
     @PostMapping("/login")
     public Result<AdminLoginVO> login(@RequestBody AdminLoginDTO adminLoginDTO) {
+        // 记录登录日志
         log.info("管理员登录：{}", adminLoginDTO.getUsername());
+
+        // 调用服务层进行登录验证
         Admin admin = adminService.adminLogin(adminLoginDTO);
 
+        // 创建JWT载荷
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.ADMIN_ID, admin.getId());
-        String token = JwtUtil.createJWT(jwtProperties.getAdminSecretKey(), jwtProperties.getAdminTtl(), claims);
+
+        // 生成JWT令牌
+        String token = JwtUtil.createJWT(
+                jwtProperties.getAdminSecretKey(), // 密钥
+                jwtProperties.getAdminTtl(), // 有效期
+                claims // 载荷信息
+        );
+
+        // 构建登录响应对象
         AdminLoginVO adminLoginVO = AdminLoginVO.builder()
                 .id(admin.getId())
                 .token(token)
                 .build();
+
+        // 返回登录成功结果
         return Result.success(adminLoginVO);
     }
 }
