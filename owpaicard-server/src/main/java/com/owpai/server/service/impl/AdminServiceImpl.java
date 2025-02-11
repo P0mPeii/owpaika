@@ -8,7 +8,6 @@ import com.owpai.pojo.dto.AdminLoginDTO;
 import com.owpai.pojo.entity.Admin;
 import com.owpai.server.mapper.AdminMapper;
 import com.owpai.server.service.AdminService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
