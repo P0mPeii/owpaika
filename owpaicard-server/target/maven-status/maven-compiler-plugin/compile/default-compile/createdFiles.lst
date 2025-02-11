@@ -1,6 +1,11 @@
 com/owpai/server/config/SecurityConfig.class
 com/owpai/server/service/AdminService.class
+com/owpai/server/mapper/GoodsMapper.class
+com/owpai/server/service/GoodsService.class
+com/owpai/server/controller/GoodsController.class
+com/owpai/server/service/impl/GoodsServiceImpl.class
 com/owpai/server/controller/AdminController.class
 com/owpai/server/mapper/AdminMapper.class
+com/owpai/server/filter/JwtAuthenticationFilter.class
 com/owpai/server/OwpaiCardApplication.class
 com/owpai/server/service/impl/AdminServiceImpl.class

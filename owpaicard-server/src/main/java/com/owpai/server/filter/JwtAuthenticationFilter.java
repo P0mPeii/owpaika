@@ -2,7 +2,7 @@ package com.owpai.server.filter;
 
 import com.owpai.common.constant.JwtClaimsConstant;
 import com.owpai.common.properties.JwtProperties;
-import com.owpai.utils.JwtUtil;
+import com.owpai.common.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,7 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
 
         // 从请求头中获取token
         String token = request.getHeader(jwtProperties.getAdminTokenName());

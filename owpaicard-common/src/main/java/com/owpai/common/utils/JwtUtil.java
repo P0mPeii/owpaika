@@ -1,4 +1,4 @@
-package com.owpai.utils;
+package com.owpai.common.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

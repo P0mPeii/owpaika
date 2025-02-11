@@ -4,15 +4,22 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.owpai.common.constant.MessageConstant;
 import com.owpai.common.exception.LoginFailedException;
+import com.owpai.pojo.dto.AdminDTO;
 import com.owpai.pojo.dto.AdminLoginDTO;
 import com.owpai.pojo.entity.Admin;
 import com.owpai.server.mapper.AdminMapper;
 import com.owpai.server.service.AdminService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
+
+    @Autowired
+    private AdminMapper adminMapper;
 
     @Override
     public Admin adminLogin(AdminLoginDTO adminLoginDTO) {
@@ -33,5 +40,18 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
 
         return admin;
+    }
+
+    @Override
+    public Admin getById() {
+        Admin admin = adminMapper.selectById(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        return admin;
+    }
+
+    @Override
+    public void update(AdminDTO adminDTO) {
+        Admin admin = new Admin();
+        BeanUtils.copyProperties(adminDTO,admin);
+        adminMapper.updateById(admin);
     }
 }

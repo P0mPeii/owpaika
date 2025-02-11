@@ -1,4 +1,9 @@
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/dto/AdminLoginDTO.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/vo/AdminLoginVO.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/entity/Admin.java
+/Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/entity/Category.java
+/Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/vo/GoodsVO.java
+/Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/entity/Goods.java
+/Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/dto/GoodsDTO.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/entity/Card.java
+/Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/dto/CategoryDTO.java

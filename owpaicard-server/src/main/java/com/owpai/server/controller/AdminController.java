@@ -3,18 +3,16 @@ package com.owpai.server.controller;
 import com.owpai.common.constant.JwtClaimsConstant;
 import com.owpai.common.properties.JwtProperties;
 import com.owpai.common.result.Result;
+import com.owpai.pojo.dto.AdminDTO;
 import com.owpai.pojo.dto.AdminLoginDTO;
 import com.owpai.pojo.entity.Admin;
 import com.owpai.server.service.AdminService;
 
 import com.owpai.pojo.vo.AdminLoginVO;
-import com.owpai.utils.JwtUtil;
+import com.owpai.common.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,5 +65,34 @@ public class AdminController {
 
         // 返回登录成功结果
         return Result.success(adminLoginVO);
+    }
+    /**
+     * admin退出
+     */
+    @PostMapping("/logout")
+    public Result<String> logout(){
+        return Result.success();
+    }
+
+    /**
+     * id 查询admin信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Result<Admin> getById(@PathVariable Long id) {
+        Admin admin = adminService.getById();
+        return Result.success(admin);
+    }
+
+    /**
+     * admin信息设置
+     * @param adminDTO
+     * @return
+     */
+    @PutMapping("/setup")
+    public Result update(@RequestBody AdminDTO adminDTO){
+        adminService.update(adminDTO);
+        return Result.success();
     }
 }

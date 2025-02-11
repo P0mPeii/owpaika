@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.math.BigDecimal;
 
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("card")
-public class Card {
+public class Card implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
     private String cardNo;    // 卡号

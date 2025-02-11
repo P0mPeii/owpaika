@@ -39,7 +39,7 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 # JWT配置
-sky:
+owpai:
   jwt:
     # 设置jwt签名加密时使用的秘钥
     admin-secret-key: itcast

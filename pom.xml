@@ -22,7 +22,7 @@
         <spring-boot.version>3.1.5</spring-boot.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <mysql.version>8.0.33</mysql.version>
-        <redis.version>3.1.0</redis.version>
+<!--        <redis.version>3.1.0</redis.version>-->
         <lombok.version>1.18.30</lombok.version>
         <hutool.version>5.8.22</hutool.version>
     </properties>
