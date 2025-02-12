@@ -81,7 +81,7 @@ public class AdminController {
      */
     @GetMapping("/{id}")
     public Result<Admin> getById(@PathVariable Long id) {
-        Admin admin = adminService.getById();
+        Admin admin = adminService.getById(id);
         return Result.success(admin);
     }
 

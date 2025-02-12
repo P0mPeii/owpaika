@@ -43,15 +43,22 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     }
 
     @Override
-    public Admin getById() {
-        Admin admin = adminMapper.selectById(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+    public Admin getById(Long id) {
+        Admin admin = adminMapper.selectById(id);
         return admin;
     }
 
     @Override
     public void update(AdminDTO adminDTO) {
         Admin admin = new Admin();
-        BeanUtils.copyProperties(adminDTO,admin);
-        adminMapper.updateById(admin);
+        BeanUtils.copyProperties(adminDTO, admin);
+
+        // 如果密码不为空，进行MD5加密
+        if (admin.getPassword() != null && !admin.getPassword().isEmpty()) {
+            String encryptedPassword = DigestUtils.md5DigestAsHex(admin.getPassword().getBytes());
+            admin.setPassword(encryptedPassword);
+        }
+
+        updateById(admin);
     }
 }

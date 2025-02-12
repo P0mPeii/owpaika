@@ -15,24 +15,24 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("goods")
+@TableName("category")
 public class Category implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    //分类名称
+    // 分类名称
     private String name;
 
-    //顺序
+    // 顺序
     private Integer sort;
 
-    //分类状态 0标识禁用 1表示启用
+    // 分类状态 0标识禁用 1表示启用
     private Integer status;
 
-    //创建时间
+    // 创建时间
     private LocalDateTime createTime;
 
-    //更新时间
+    // 更新时间
     private LocalDateTime updateTime;
 
 }

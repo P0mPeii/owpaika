@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class GoodsVO implements Serializable {
     private Long id;
-    private String name;
+    private String gdName;
     private Long categoryId;
     private String image;
     private BigDecimal price;

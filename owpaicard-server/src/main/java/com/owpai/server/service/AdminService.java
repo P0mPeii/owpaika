@@ -7,7 +7,7 @@ import com.owpai.pojo.entity.Admin;
 public interface AdminService {
     Admin adminLogin(AdminLoginDTO adminLoginDTO);
 
-    Admin getById();
+    Admin getById(Long id);
 
     void update(AdminDTO adminDTO);
 }

@@ -22,12 +22,13 @@ public class Goods implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
     private String gdName;
-    private String categoryId;
+    private Long categoryId;
     private BigDecimal price;
+    private String description;
     private String image;
     private Integer status;
-    @Version
-    private Long version;
+    // @Version
+    // private Long version;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }
