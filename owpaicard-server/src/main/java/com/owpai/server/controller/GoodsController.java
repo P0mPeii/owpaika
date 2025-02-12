@@ -1,5 +1,7 @@
 package com.owpai.server.controller;
 
+import cn.hutool.db.PageResult;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.owpai.common.result.Result;
 import com.owpai.pojo.dto.GoodsDTO;
 import com.owpai.pojo.entity.Goods;
@@ -59,11 +61,26 @@ public class GoodsController {
         List<Goods> list = goodsService.list(categoryId);
         return Result.success(list);
     }
+
     /**
      * 商品分页查询
+     * 
+     * @param page       页码
+     * @param pageSize   每页记录数
+     * @return 分页查询结果
      */
+    @GetMapping
+    public Result<Page> page(Integer page, Integer pageSize) {
+        Page<Goods> pageResult = goodsService.pageQuery(page, pageSize);
+        return Result.success(pageResult);
+    }
 
     /**
      * 启用禁用商品
      */
+    @PutMapping("/status/{status}")
+    public Result status(@PathVariable Integer status,Long id){
+        goodsService.updateStatus(status,id);
+        return Result.success();
+    }
 }

@@ -10,5 +10,6 @@ public class MessageConstant {
     public static final String TOKEN_INVALID = "token无效";
     public static final String ALREADY_EXISTS = "已经存在";
     public static final String NOT_EXISTS = "不存在";
+    public static final String ALREADY_IS = "已经是了";
 
 }

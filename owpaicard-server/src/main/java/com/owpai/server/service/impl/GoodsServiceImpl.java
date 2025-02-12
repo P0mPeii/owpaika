@@ -1,6 +1,7 @@
 package com.owpai.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.owpai.common.constant.MessageConstant;
 import com.owpai.common.exception.AddNotAllowedException;
 import com.owpai.common.exception.DeletionNotAllowedException;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -75,5 +75,26 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                 .eq(categoryId != null, Goods::getCategoryId, categoryId)
                 .list();
         return list;
+    }
+
+    @Override
+    public Page<Goods> pageQuery(Integer page, Integer pageSize) {
+        Page<Goods> pageInfo = new Page<>(page, pageSize);
+        return lambdaQuery()
+                .orderByDesc(Goods::getCreateTime)
+                .page(pageInfo);
+    }
+
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        Goods gd = goodsMapper.selectById(id);
+        if (gd == null) {
+            throw new UpdateNotAllowedException(MessageConstant.NOT_EXISTS);
+        }
+        if (status.equals(gd.getStatus())){
+            throw new UpdateNotAllowedException(MessageConstant.ALREADY_IS);
+        }
+                    gd.setUpdateTime(LocalDateTime.now());
+        goodsMapper.updateById(gd);
     }
 }

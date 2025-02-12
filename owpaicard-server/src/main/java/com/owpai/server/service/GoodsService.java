@@ -1,5 +1,6 @@
 package com.owpai.server.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.owpai.pojo.dto.GoodsDTO;
 import com.owpai.pojo.entity.Goods;
 
@@ -16,4 +17,7 @@ public interface GoodsService {
 
     List<Goods> list(Long categoryId);
 
+    Page<Goods> pageQuery(Integer page, Integer pageSize);
+
+    void updateStatus(Integer status, Long id);
 }
