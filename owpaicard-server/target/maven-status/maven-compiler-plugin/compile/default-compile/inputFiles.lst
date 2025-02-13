@@ -12,6 +12,7 @@
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-server/src/main/java/com/owpai/server/controller/GoodsController.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-server/src/main/java/com/owpai/server/filter/JwtAuthenticationFilter.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-server/src/main/java/com/owpai/server/mapper/EmailtplsMapper.java
+/Users/lwh/Desktop/owpai/owpaicard/owpaicard-server/src/main/java/com/owpai/config/RedisConfig.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-server/src/main/java/com/owpai/server/service/EmailtplsService.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-server/src/main/java/com/owpai/server/mapper/GoodsMapper.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-server/src/main/java/com/owpai/server/controller/OrderDashboardController.java

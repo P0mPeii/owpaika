@@ -2,7 +2,7 @@ package com.owpai.server.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.owpai.pojo.dto.OrderDTO;
-import com.owpai.pojo.entity.Order;
+import com.owpai.pojo.entity.Orders;
 import com.owpai.pojo.enums.OrderStatus;
 
 import java.util.List;
@@ -12,13 +12,13 @@ public interface OrderService {
 
     void delete(Long id);
 
-    Order select(Long id);
+    Orders select(Long id);
 
     void update(OrderStatus status, Long id);
 
-    Page<Order> pageQuery(Integer page, Integer pageSize);
+    Page<Orders> pageQuery(Integer page, Integer pageSize);
 
-    List<Order> selectEmail(String email);
+    List<Orders> selectEmail(String email);
 
-    Order selectNumber(String orderNum);
+    Orders selectNumber(String orderNum);
 }

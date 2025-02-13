@@ -1,7 +1,7 @@
 package com.owpai.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.owpai.pojo.entity.Order;
+import com.owpai.pojo.entity.Orders;
 import com.owpai.pojo.enums.OrderStatus;
 import com.owpai.pojo.vo.OrderDashboardTimeVO;
 import com.owpai.pojo.vo.OrderDashboardVO;
@@ -32,14 +32,14 @@ public class OrderDashboardServiceImpl implements OrderDashboardService {
         }
 
         public OrderDashboardVO getOrderDashboardVO(LocalDateTime startTime, LocalDateTime endTime) {
-                LambdaQueryWrapper<Order> queryWrapper = new LambdaQueryWrapper<Order>()
-                                .between(Order::getCreateTime, startTime, endTime);
+                LambdaQueryWrapper<Orders> queryWrapper = new LambdaQueryWrapper<Orders>()
+                                .between(Orders::getCreateTime, startTime, endTime);
 
-                List<Order> orders = orderMapper.selectList(queryWrapper);
+                List<Orders> orders = orderMapper.selectList(queryWrapper);
 
                 long totalOrders = orders.size();
                 BigDecimal totalAmount = orders.stream()
-                                .map(Order::getAmount)
+                                .map(Orders::getAmount)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
                 long pendingOrders = orders.stream()

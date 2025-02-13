@@ -1,9 +1,10 @@
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/vo/CardKeyVO.java
-/Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/entity/Order.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/dto/GoodsDTO.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/vo/OrderDashboardTimeVO.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/entity/CardKey.java
+/Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/enums/OrderStatus.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/vo/OrderDashboardVO.java
+/Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/entity/Orders.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/dto/EmailtplsDTO.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/dto/AdminLoginDTO.java
 /Users/lwh/Desktop/owpai/owpaicard/owpaicard-pojo/src/main/java/com/owpai/pojo/vo/AdminLoginVO.java

@@ -7,7 +7,7 @@ import com.owpai.common.exception.DeletionNotAllowedException;
 import com.owpai.common.exception.UpdateNotAllowedException;
 import com.owpai.pojo.dto.OrderDTO;
 import com.owpai.pojo.entity.CardKey;
-import com.owpai.pojo.entity.Order;
+import com.owpai.pojo.entity.Orders;
 import com.owpai.pojo.enums.OrderStatus;
 import com.owpai.server.mapper.CardKeyMapper;
 import com.owpai.server.mapper.OrderMapper;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
+public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
@@ -30,15 +30,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public void add(OrderDTO orderDTO) {
-        Order order = new Order();
-        BeanUtils.copyProperties(orderDTO, order);
-        Order.builder()
-                .totalPrice(order.getPrice().multiply(order.getNumber()))
+        Orders orders = new Orders();
+        BeanUtils.copyProperties(orderDTO, orders);
+        Orders.builder()
+                .totalPrice(orders.getPrice().multiply(orders.getNumber()))
                 .createTime(LocalDateTime.now())
                 .status(OrderStatus.PENDING)
                 .build();
 
-        orderMapper.insert(order);
+        orderMapper.insert(orders);
     }
 
     @Override
@@ -50,25 +50,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public Order select(Long id) {
+    public Orders select(Long id) {
         return orderMapper.selectById(id);
     }
 
     @Override
     @Transactional
     public void update(OrderStatus status, Long id) {
-        Order order = orderMapper.selectById(id);
-        if (order == null) {
+        Orders orders = orderMapper.selectById(id);
+        if (orders == null) {
             throw new UpdateNotAllowedException(MessageConstant.NOT_EXISTS);
         }
 
-        if (status.equals(order.getStatus())) {
+        if (status.equals(orders.getStatus())) {
             throw new UpdateNotAllowedException(MessageConstant.ALREADY_IS);
         }
 
         // 如果订单状态更新为已完成(status=COMPLETED)，则更新对应卡密状态为已售出
         if (status == OrderStatus.SENT) {
-            CardKey cardKey = cardKeyMapper.selectById(order.getCardKeyId());
+            CardKey cardKey = cardKeyMapper.selectById(orders.getCardKeyId());
             if (cardKey != null) {
                 cardKey.setStatus(1); // 设置卡密状态为已售出
                 cardKey.setUpdateTime(LocalDateTime.now());
@@ -76,33 +76,33 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             }
         }
 
-        order.setStatus(status);
-        order.setUpdateTime(LocalDateTime.now());
-        orderMapper.updateById(order);
+        orders.setStatus(status);
+        orders.setUpdateTime(LocalDateTime.now());
+        orderMapper.updateById(orders);
     }
 
     @Override
-    public Page<Order> pageQuery(Integer page, Integer pageSize) {
-        Page<Order> pageInfo = new Page<>();
+    public Page<Orders> pageQuery(Integer page, Integer pageSize) {
+        Page<Orders> pageInfo = new Page<>();
         return lambdaQuery()
-                .orderByDesc(Order::getUpdateTime)
+                .orderByDesc(Orders::getUpdateTime)
                 .page(pageInfo);
     }
 
     @Override
-    public List<Order> selectEmail(String email) {
-        List<Order> list = lambdaQuery()
-                .eq(email != null, Order::getEmail, email)
+    public List<Orders> selectEmail(String email) {
+        List<Orders> list = lambdaQuery()
+                .eq(email != null, Orders::getEmail, email)
                 .list();
         return list;
     }
 
     // 订单号查订单
     @Override
-    public Order selectNumber(String orderNum) {
-        Order order = lambdaQuery()
-                .eq(orderNum != null, Order::getOrderNum, orderNum)
+    public Orders selectNumber(String orderNum) {
+        Orders orders = lambdaQuery()
+                .eq(orderNum != null, Orders::getOrderNum, orderNum)
                 .one();
-        return order;
+        return orders;
     }
 }

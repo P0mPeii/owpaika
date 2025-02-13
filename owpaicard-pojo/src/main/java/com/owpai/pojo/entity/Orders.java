@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @TableName("orders")
-public class Order implements Serializable {
+public class Orders implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
 
