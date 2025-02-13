@@ -3,6 +3,7 @@ package com.owpai.server.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.owpai.pojo.dto.OrderDTO;
 import com.owpai.pojo.entity.Order;
+import com.owpai.pojo.enums.OrderStatus;
 
 import java.util.List;
 
@@ -11,10 +12,9 @@ public interface OrderService {
 
     void delete(Long id);
 
-
     Order select(Long id);
 
-    void update(Integer status, Long id);
+    void update(OrderStatus status, Long id);
 
     Page<Order> pageQuery(Integer page, Integer pageSize);
 

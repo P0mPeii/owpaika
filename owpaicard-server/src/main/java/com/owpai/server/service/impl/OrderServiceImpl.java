@@ -5,14 +5,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.owpai.common.constant.MessageConstant;
 import com.owpai.common.exception.DeletionNotAllowedException;
 import com.owpai.common.exception.UpdateNotAllowedException;
-import com.owpai.common.result.Result;
 import com.owpai.pojo.dto.OrderDTO;
+import com.owpai.pojo.entity.CardKey;
 import com.owpai.pojo.entity.Order;
+import com.owpai.pojo.enums.OrderStatus;
+import com.owpai.server.mapper.CardKeyMapper;
 import com.owpai.server.mapper.OrderMapper;
 import com.owpai.server.service.OrderService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +25,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private CardKeyMapper cardKeyMapper;
+
     @Override
     public void add(OrderDTO orderDTO) {
         Order order = new Order();
@@ -29,7 +35,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Order.builder()
                 .totalPrice(order.getPrice().multiply(order.getNumber()))
                 .createTime(LocalDateTime.now())
-                .status(0)
+                .status(OrderStatus.PENDING)
                 .build();
 
         orderMapper.insert(order);
@@ -49,14 +55,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public void update(Integer status, Long id) {
+    @Transactional
+    public void update(OrderStatus status, Long id) {
         Order order = orderMapper.selectById(id);
         if (order == null) {
             throw new UpdateNotAllowedException(MessageConstant.NOT_EXISTS);
         }
+
         if (status.equals(order.getStatus())) {
             throw new UpdateNotAllowedException(MessageConstant.ALREADY_IS);
         }
+
+        // 如果订单状态更新为已完成(status=COMPLETED)，则更新对应卡密状态为已售出
+        if (status == OrderStatus.SENT) {
+            CardKey cardKey = cardKeyMapper.selectById(order.getCardKeyId());
+            if (cardKey != null) {
+                cardKey.setStatus(1); // 设置卡密状态为已售出
+                cardKey.setUpdateTime(LocalDateTime.now());
+                cardKeyMapper.updateById(cardKey);
+            }
+        }
+
         order.setStatus(status);
         order.setUpdateTime(LocalDateTime.now());
         orderMapper.updateById(order);
@@ -78,11 +97,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return list;
     }
 
-    //订单号查订单
+    // 订单号查订单
     @Override
     public Order selectNumber(String orderNum) {
         Order order = lambdaQuery()
-                .eq(orderNum != null,Order::getOrderNum,orderNum)
+                .eq(orderNum != null, Order::getOrderNum, orderNum)
                 .one();
         return order;
     }

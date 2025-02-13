@@ -3,6 +3,7 @@ package com.owpai.pojo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.owpai.pojo.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,6 @@ import java.time.LocalDateTime;
 @TableName("orders")
 public class Order implements Serializable {
     @TableId(type = IdType.AUTO)
-
     private Long id;
 
     // 商品id
@@ -32,7 +32,7 @@ public class Order implements Serializable {
     private String orderNum;
 
     // 订单状态 0待付款 1待发货 2已完成 3已取消 4待退款 5已退款
-    private Integer status;
+    private OrderStatus status;
 
     // 支付方式
     private Integer payMethod;
@@ -46,6 +46,9 @@ public class Order implements Serializable {
     // 发货方式 1自动发货 2人工处理
     private Integer type;
 
+    // 卡密id
+    private Long CardKeyId;
+
     // 总价
     private BigDecimal totalPrice;
 
@@ -57,5 +60,6 @@ public class Order implements Serializable {
 
     // 更新时间
     private LocalDateTime updateTime;
+
 
 }
