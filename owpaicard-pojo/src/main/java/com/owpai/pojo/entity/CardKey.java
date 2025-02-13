@@ -9,21 +9,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("card")
-public class Card implements Serializable {
+@Builder
+@TableName("card_key")
+public class CardKey implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private String cardNo; // 卡号
-    private String cardKey; // 卡密
-    private BigDecimal price; // 价格
-    private Integer status; // 状态：0-未售出 1-已售出
-    private Date createTime; // 创建时间
-    private Date updateTime; // 更新时间
+    private Long gd_id;
+    private Integer status;
+    private Integer loopKey;
+    private String key;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }

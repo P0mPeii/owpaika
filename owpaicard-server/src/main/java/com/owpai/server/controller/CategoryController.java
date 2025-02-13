@@ -67,8 +67,8 @@ public class CategoryController {
      * 启用禁用分类
      */
     @PutMapping("/status/{status}")
-    public Result status(@PathVariable Integer status,Long id){
-        categoryService.status(status,id);
+    public Result status(@PathVariable Integer status, Long id) {
+        categoryService.status(status, id);
         return Result.success();
     }
 }

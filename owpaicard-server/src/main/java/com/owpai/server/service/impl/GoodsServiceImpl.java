@@ -91,10 +91,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         if (gd == null) {
             throw new UpdateNotAllowedException(MessageConstant.NOT_EXISTS);
         }
-        if (status.equals(gd.getStatus())){
+        if (status.equals(gd.getStatus())) {
             throw new UpdateNotAllowedException(MessageConstant.ALREADY_IS);
         }
-                    gd.setUpdateTime(LocalDateTime.now());
+        gd.setUpdateTime(LocalDateTime.now());
         goodsMapper.updateById(gd);
     }
 }

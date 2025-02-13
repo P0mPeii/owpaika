@@ -65,8 +65,8 @@ public class GoodsController {
     /**
      * 商品分页查询
      * 
-     * @param page       页码
-     * @param pageSize   每页记录数
+     * @param page     页码
+     * @param pageSize 每页记录数
      * @return 分页查询结果
      */
     @GetMapping
@@ -79,8 +79,8 @@ public class GoodsController {
      * 启用禁用商品
      */
     @PutMapping("/status/{status}")
-    public Result status(@PathVariable Integer status,Long id){
-        goodsService.updateStatus(status,id);
+    public Result status(@PathVariable Integer status, Long id) {
+        goodsService.updateStatus(status, id);
         return Result.success();
     }
 }

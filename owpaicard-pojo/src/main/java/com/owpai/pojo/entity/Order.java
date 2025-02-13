@@ -16,44 +16,46 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName("order")
+@TableName("orders")
 public class Order implements Serializable {
     @TableId(type = IdType.AUTO)
 
     private Long id;
 
-    //商品id
-    private Long gd_id;
+    // 商品id
+    private Long gdId;
 
-    //购买数量
+    // 购买数量
     private BigDecimal number;
 
-    //订单号
-    private  String orderNum;
+    // 订单号
+    private String orderNum;
 
-    //订单状态 1待付款 2待发货 3已完成 4已取消 5待退款 6已退款
+    // 订单状态 0待付款 1待发货 2已完成 3已取消 4待退款 5已退款
     private Integer status;
 
-    //支付方式
+    // 支付方式
     private Integer payMethod;
 
-    //邮箱
+    // 邮箱
     private String email;
 
-    //单价
+    // 单价
     private BigDecimal price;
 
-    //总价
+    // 发货方式 1自动发货 2人工处理
+    private Integer type;
+
+    // 总价
     private BigDecimal totalPrice;
 
-    //实收金额
+    // 实收金额
     private BigDecimal amount;
 
-    //创建时间，下单时间
+    // 创建时间，下单时间
     private LocalDateTime createTime;
 
-    //更新时间
+    // 更新时间
     private LocalDateTime updateTime;
-
 
 }
