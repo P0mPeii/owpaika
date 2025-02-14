@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class CardKey implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private Long gd_id;
+    private Long gdId;
     private Integer status;
     private Integer loopKey;
     private String key;

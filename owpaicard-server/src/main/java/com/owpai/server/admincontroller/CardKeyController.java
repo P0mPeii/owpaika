@@ -1,4 +1,4 @@
-package com.owpai.server.controller;
+package com.owpai.server.admincontroller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.owpai.common.result.Result;

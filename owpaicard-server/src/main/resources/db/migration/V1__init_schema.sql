@@ -68,3 +68,16 @@ CREATE TABLE email_tpls
     create_time timestamp    NULL DEFAULT NULL COMMENT '创建时间',
     update_time timestamp    NULL DEFAULT NULL COMMENT '更新时间'
 ) COMMENT '邮件模板表';
+
+ALTER TABLE card_key
+    ADD COLUMN gd_id bigint(20) COMMENT '商品ID';
+
+-- 创建商品和卡密关系表
+CREATE TABLE IF NOT EXISTS goods_card_key
+(
+    id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+    gd_id       BIGINT NOT NULL COMMENT '商品ID',
+    card_key_id BIGINT NOT NULL COMMENT '卡密ID',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+) COMMENT '商品卡密关系表';

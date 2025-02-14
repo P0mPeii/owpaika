@@ -1,4 +1,4 @@
-package com.owpai.server.controller;
+package com.owpai.server.admincontroller;
 
 import com.owpai.common.constant.JwtClaimsConstant;
 import com.owpai.common.properties.JwtProperties;

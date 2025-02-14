@@ -23,12 +23,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = "goods")
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements GoodsService {
 
     @Autowired
     private GoodsMapper goodsMapper;
 
     @Override
+    @CacheEvict(allEntries = true)
     public void add(GoodsDTO goodsDTO) {
         String name = goodsDTO.getGdName();
         Goods good = lambdaQuery()
@@ -44,6 +46,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void delete(Long id) {
         Goods goods = goodsMapper.selectById(id);
         if (goods == null) {
@@ -53,6 +56,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void update(GoodsDTO goodsDTO) {
         Goods gd = goodsMapper.selectById(goodsDTO.getId());
         if (gd == null) {
@@ -65,6 +69,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    @Cacheable(key = "'goods_' + #id")
     public Goods selectById(Long id) {
         Goods goods = goodsMapper.selectById(id);
         if (goods == null) {
@@ -74,6 +79,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    @Cacheable(key = "'goods_' + #categoryId")
     public List<Goods> list(Long categoryId) {
         List<Goods> list = lambdaQuery()
                 .eq(categoryId != null, Goods::getCategoryId, categoryId)
@@ -82,6 +88,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    @Cacheable(key = "'goods_' + #page + '_' + #pageSize")
     public Page<Goods> pageQuery(Integer page, Integer pageSize) {
         Page<Goods> pageInfo = new Page<>(page, pageSize);
         return lambdaQuery()
@@ -90,6 +97,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void updateStatus(Integer status, Long id) {
         Goods gd = goodsMapper.selectById(id);
         if (gd == null) {

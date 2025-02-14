@@ -1,9 +1,8 @@
-package com.owpai.server.controller;
+package com.owpai.server.admincontroller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.owpai.common.result.Result;
 import com.owpai.pojo.dto.CategoryDTO;
-import com.owpai.pojo.dto.GoodsDTO;
 import com.owpai.pojo.entity.Category;
 import com.owpai.server.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

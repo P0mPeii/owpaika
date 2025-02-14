@@ -1,0 +1,14 @@
+com/owpai/common/exception/LoginFailedException.class
+com/owpai/common/exception/UpdateNotAllowedException.class
+com/owpai/common/exception/AddNotAllowedException.class
+com/owpai/common/exception/GlobalExceptionHandler.class
+com/owpai/common/context/BaseContext.class
+com/owpai/common/exception/DeletionNotAllowedException.class
+com/owpai/common/constant/JwtClaimsConstant.class
+com/owpai/common/exception/BusinessException.class
+com/owpai/common/result/Result.class
+com/owpai/common/properties/JwtProperties.class
+com/owpai/common/exception/BaseException.class
+com/owpai/common/utils/JwtUtil.class
+com/owpai/common/exception/SelectFailedException.class
+com/owpai/common/constant/MessageConstant.class

@@ -1,4 +1,4 @@
-package com.owpai.server.controller;
+package com.owpai.server.admincontroller;
 
 import com.owpai.common.result.Result;
 import com.owpai.pojo.vo.OrderDashboardTimeVO;

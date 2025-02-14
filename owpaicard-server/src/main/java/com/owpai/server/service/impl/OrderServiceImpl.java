@@ -1,8 +1,10 @@
 package com.owpai.server.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.owpai.common.constant.MessageConstant;
+import com.owpai.common.exception.BusinessException;
 import com.owpai.common.exception.DeletionNotAllowedException;
 import com.owpai.common.exception.UpdateNotAllowedException;
 import com.owpai.pojo.dto.OrderDTO;
@@ -66,11 +68,32 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
             throw new UpdateNotAllowedException(MessageConstant.ALREADY_IS);
         }
 
-        // 如果订单状态更新为已完成(status=COMPLETED)，则更新对应卡密状态为已售出
-        if (status == OrderStatus.SENT) {
+        // 如果订单状态更新为已支付，则分配卡密并更新状态
+        if (status == OrderStatus.PAID) {
+            // 查询一个未售出的且属于该订单商品的卡密
+            CardKey cardKey = cardKeyMapper.selectOne(new LambdaQueryWrapper<CardKey>()
+                    .eq(CardKey::getStatus, 0)
+                    .eq(CardKey::getGdId, orders.getGdId())
+                    .last("LIMIT 1"));
+            
+            if (cardKey == null) {
+                throw new BusinessException("暂无可用卡密");
+            }
+            
+            // 更新卡密状态为已售出
+            cardKey.setStatus(1);
+            cardKey.setUpdateTime(LocalDateTime.now());
+            cardKeyMapper.updateById(cardKey);
+            
+            // 将卡密ID关联到订单
+            orders.setCardKeyId(cardKey.getId());
+//            orders.setCardKe(cardKey.getCardKey()); // 存储卡密值到订单中
+        }
+        // 如果订单状态更新为已发货，确认卡密状态
+        else if (status == OrderStatus.SENT) {
             CardKey cardKey = cardKeyMapper.selectById(orders.getCardKeyId());
             if (cardKey != null) {
-                cardKey.setStatus(1); // 设置卡密状态为已售出
+                cardKey.setStatus(1); // 确保卡密状态为已售出
                 cardKey.setUpdateTime(LocalDateTime.now());
                 cardKeyMapper.updateById(cardKey);
             }
