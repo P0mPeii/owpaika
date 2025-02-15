@@ -6,3 +6,11 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+# 应用配置文件
+/owpaicard-server/src/main/resources/application.yml
+/owpaicard-server/src/main/resources/application-dev.yml
+
+# 编译输出目录
+/target/
+/*/target/
+.idea

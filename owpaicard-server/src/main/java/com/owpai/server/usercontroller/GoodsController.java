@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "商品管理接口", description = "商品相关接口")
-@RestController
+@RestController("userGoodsController")
 @RequestMapping
 public class GoodsController {
     @Autowired

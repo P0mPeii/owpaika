@@ -1,1 +1,16 @@
-.DS_Store
+# IDE files
+.idea/
+*.iml
+
+# Build files
+target/
+
+# Configuration files
+/owpaicard-server/src/main/resources/application.yml
+
+# Build output
+/target/
+/*/target/
+/**/target/
+/**/target/classes/
+

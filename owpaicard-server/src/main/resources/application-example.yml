@@ -8,16 +8,16 @@ spring:
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://0.0.0.0:3306/owpaicard?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: 992754
+    url: jdbc:mysql://localhost:3306/your_database?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: your_username
+    password: your_password
 
   # Redis配置
   data:
     redis:
       host: localhost
       port: 6379
-      password:
+      password: your_redis_password
       database: 1
       timeout: 10s
 
@@ -37,8 +37,25 @@ mybatis-plus:
 owpai:
   jwt:
     # 设置jwt签名加密时使用的秘钥
-    admin-secret-key: itcast
-    # 设置jwt过期时间 20小时
+    admin-secret-key: your_secret_key
+    # 设置jwt过期时间
     admin-ttl: 72000000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+
+# 支付宝支付配置
+alipay:
+  # 支付宝网关地址
+  server-url: https://openapi.alipay.com/gateway.do
+  # 应用ID
+  app-id: your_app_id
+  # 商户私钥
+  merchant-private-key: your_merchant_private_key
+  # 支付宝公钥
+  alipay-public-key: your_alipay_public_key
+  # 签名类型
+  sign-type: RSA2
+  # 字符编码格式
+  charset: utf-8
+  # 返回格式
+  format: json

@@ -21,12 +21,29 @@ import java.time.LocalDateTime;
 public class Goods implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
+
     private String gdName;
+
     private Long categoryId;
+
     private BigDecimal price;
+
     private String description;
+
+    //发货方式
+    private Integer type;
+
     private String image;
+
     private Integer status;
+
+    //销量
+    private Integer sales;
+
+    //库存
+    private Integer stock;
+
     private LocalDateTime createTime;
+
     private LocalDateTime updateTime;
 }

@@ -39,7 +39,7 @@ public class OrderDashboardServiceImpl implements OrderDashboardService {
 
                 long totalOrders = orders.size();
                 BigDecimal totalAmount = orders.stream()
-                                .map(Orders::getAmount)
+                                .map(Orders::getPayAmount)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
                 long pendingOrders = orders.stream()

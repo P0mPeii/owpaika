@@ -26,12 +26,12 @@ public class Orders implements Serializable {
     private Long gdId;
 
     // 购买数量
-    private BigDecimal number;
+    private Integer number;
 
     // 订单号
     private String orderNum;
 
-    // 订单状态 0待付款 1待发货 2已完成 3已取消 4待退款 5已退款
+    // 订单状态 0待付款 1已付款/待处理 2处理中 3已完成 4用户/admin已取消 5超时 6已退款 7拒绝退款
     private OrderStatus status;
 
     // 支付方式
@@ -47,13 +47,19 @@ public class Orders implements Serializable {
     private Integer type;
 
     // 卡密id
-    private Long CardKeyId;
+    private Long cardKeyId;
 
     // 总价
     private BigDecimal totalPrice;
 
     // 实收金额
-    private BigDecimal amount;
+    private BigDecimal payAmount;
+
+    // 支付流水号
+    private String paymentId;
+
+    // 支付时间
+    private LocalDateTime payTime;
 
     // 创建时间，下单时间
     private LocalDateTime createTime;

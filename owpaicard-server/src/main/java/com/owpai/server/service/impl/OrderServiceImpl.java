@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         Orders orders = new Orders();
         BeanUtils.copyProperties(orderDTO, orders);
         Orders.builder()
-                .totalPrice(orders.getPrice().multiply(orders.getNumber()))
+                .totalPrice(orders.getPrice().multiply(BigDecimal.valueOf(orders.getNumber())))
                 .createTime(LocalDateTime.now())
                 .status(OrderStatus.PENDING)
                 .build();
@@ -70,10 +71,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
         // 如果订单状态更新为已支付，则分配卡密并更新状态
         if (status == OrderStatus.PAID) {
+            // 检查订单商品ID是否存在
+            Long gdId = orders.getGdId();
+            if (gdId == null) {
+                throw new BusinessException("订单商品信息不完整");
+            }
+            
             // 查询一个未售出的且属于该订单商品的卡密
             CardKey cardKey = cardKeyMapper.selectOne(new LambdaQueryWrapper<CardKey>()
                     .eq(CardKey::getStatus, 0)
-                    .eq(CardKey::getGdId, orders.getGdId())
+                    .eq(CardKey::getGdId, gdId)
                     .last("LIMIT 1"));
             
             if (cardKey == null) {
@@ -87,15 +94,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
             
             // 将卡密ID关联到订单
             orders.setCardKeyId(cardKey.getId());
-//            orders.setCardKe(cardKey.getCardKey()); // 存储卡密值到订单中
         }
         // 如果订单状态更新为已发货，确认卡密状态
         else if (status == OrderStatus.SENT) {
-            CardKey cardKey = cardKeyMapper.selectById(orders.getCardKeyId());
-            if (cardKey != null) {
-                cardKey.setStatus(1); // 确保卡密状态为已售出
-                cardKey.setUpdateTime(LocalDateTime.now());
-                cardKeyMapper.updateById(cardKey);
+            Long cardKeyId = orders.getCardKeyId();
+            if (cardKeyId != null) {
+                CardKey cardKey = cardKeyMapper.selectById(cardKeyId);
+                if (cardKey != null) {
+                    cardKey.setStatus(1); // 确保卡密状态为已售出
+                    cardKey.setUpdateTime(LocalDateTime.now());
+                    cardKeyMapper.updateById(cardKey);
+                }
             }
         }
 

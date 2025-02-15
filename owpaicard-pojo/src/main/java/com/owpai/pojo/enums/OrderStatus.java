@@ -12,6 +12,11 @@ public enum OrderStatus {
     PAID,
 
     /**
+     * 处理中
+     */
+    PROCESSING,
+
+    /**
      * 已完成
      */
     SENT,

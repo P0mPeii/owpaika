@@ -13,4 +13,12 @@
       </profile>
     </annotationProcessing>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="owpaicard" options="" />
+      <module name="owpaicard-common" options="" />
+      <module name="owpaicard-pojo" options="" />
+      <module name="owpaicard-server" options="" />
+    </option>
+  </component>
 </project>

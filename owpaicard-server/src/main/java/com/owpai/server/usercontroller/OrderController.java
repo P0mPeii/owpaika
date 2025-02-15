@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "订单管理接口", description = "订单相关接口")
-@RestController
+@RestController("userOrderController")
 @RequestMapping("/order")
 public class OrderController {
     private OrderService orderService;

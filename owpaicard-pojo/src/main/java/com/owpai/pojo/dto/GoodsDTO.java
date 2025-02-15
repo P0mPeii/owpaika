@@ -14,6 +14,7 @@ public class GoodsDTO implements Serializable {
     private String gdName;
     private Long categoryId;
     private BigDecimal price;
+    private Integer type;
     private String description;
     private String image;
     private Integer status;
