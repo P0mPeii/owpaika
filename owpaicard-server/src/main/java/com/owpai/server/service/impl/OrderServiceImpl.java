@@ -32,7 +32,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     private CardKeyMapper cardKeyMapper;
 
     @Override
-    public void add(OrderDTO orderDTO) {
+    public Orders add(OrderDTO orderDTO) {
         Orders orders = new Orders();
         BeanUtils.copyProperties(orderDTO, orders);
         Orders.builder()
@@ -42,6 +42,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
                 .build();
 
         orderMapper.insert(orders);
+        return orders;
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.owpai.pojo.enums.OrderStatus;
 import java.util.List;
 
 public interface OrderService {
-    void add(OrderDTO orderDTO);
+    Orders add(OrderDTO orderDTO);
 
     void delete(Long id);
 

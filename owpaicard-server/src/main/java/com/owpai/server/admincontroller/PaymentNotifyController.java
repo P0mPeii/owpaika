@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "支付通知接口", description = "处理支付平台异步通知")
 @RestController
-@RequestMapping("//payment/notify")
+@RequestMapping("/payment/notify")
 @Slf4j
 public class PaymentNotifyController {
 

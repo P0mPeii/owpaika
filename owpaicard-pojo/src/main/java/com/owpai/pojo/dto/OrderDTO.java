@@ -28,9 +28,3 @@ public class OrderDTO implements Serializable {
     private BigDecimal price;
 
 }
-/**
- * 购买方式
- * 邮箱
- * 购买数量
- *
- */

@@ -13,6 +13,7 @@ import com.owpai.server.service.EmailService;
 import com.owpai.server.service.OrderProcessService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,9 @@ public class OrderProcessServiceImpl implements OrderProcessService {
     private CardKeyMapper cardKeyMapper;
     @Autowired
     private EmailService emailService;
+
+    @Value("${spring.mail.username}")
+    private String adminEmail;
 
     @Override
     @Transactional
@@ -148,6 +152,6 @@ public class OrderProcessServiceImpl implements OrderProcessService {
         // 发送邮件通知管理员
         String emailContent = String.format("新订单待处理，订单号：%s，商品：%s，数量：%d",
                 order.getOrderNum(), goods.getGdName(), order.getNumber());
-        emailService.sendEmail("admin@example.com", "新订单待处理通知", emailContent);
+        emailService.sendEmail(adminEmail, "新订单待处理通知", emailContent);
     }
 }

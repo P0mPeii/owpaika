@@ -32,6 +32,12 @@ public class AlipayConfig {
     @Value("${alipay.sign-type:RSA2}")
     private String signType;
 
+    @Value("${alipay.return-url}")
+    private String returnUrl;
+
+    @Value("${alipay.notify-url}")
+    private String notifyUrl;
+
     @Bean
     public AlipayClient alipayClient() {
         return new DefaultAlipayClient(
@@ -41,7 +47,9 @@ public class AlipayConfig {
                 format,
                 charset,
                 alipayPublicKey,
-                signType
+                signType,
+                returnUrl,
+                notifyUrl
         );
     }
 }
