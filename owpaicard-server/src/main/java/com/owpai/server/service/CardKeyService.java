@@ -17,7 +17,7 @@ public interface CardKeyService {
 
     void add(CardKeyDTO cardKeyDTO);
 
-    void batchAdd(String[] keys);
+    void batchAdd(String[] keys,boolean removeDuplicates);
 
     Page<CardKey> pageQuery(Integer page, Integer pageSize);
 }

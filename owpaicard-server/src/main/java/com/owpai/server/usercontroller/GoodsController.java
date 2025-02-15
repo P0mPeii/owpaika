@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.owpai.common.result.Result;
 import com.owpai.pojo.dto.GoodsDTO;
 import com.owpai.pojo.entity.Goods;
+import com.owpai.pojo.enums.OnOffStatus;
 import com.owpai.server.service.GoodsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Tag(name = "商品管理接口", description = "商品相关接口")
 @RestController("userGoodsController")
-@RequestMapping
+@RequestMapping("/user")
 public class GoodsController {
     @Autowired
     private GoodsService goodsService;
@@ -39,7 +40,7 @@ public class GoodsController {
     public Result<Page> page(
             @Parameter(description = "页码") Integer page,
             @Parameter(description = "每页记录数") Integer pageSize) {
-        Page<Goods> pageResult = goodsService.pageQuery(page, pageSize);
+        Page<Goods> pageResult = goodsService.pageQuery(OnOffStatus.ON,page, pageSize);
         return Result.success(pageResult);
     }
 

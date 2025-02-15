@@ -116,10 +116,13 @@ public class OrderProcessServiceImpl implements OrderProcessService {
                         .last("LIMIT 1"));
 
         if (cardKey != null) {
-            // 更新卡密状态
-            cardKey.setStatus(1);
-            cardKey.setUpdateTime(LocalDateTime.now());
-            cardKeyMapper.updateById(cardKey);
+            // 如果是一次性卡密，更新状态为已使用
+            if (cardKey.getType() == 0) {
+                cardKey.setStatus(1);
+                cardKey.setUpdateTime(LocalDateTime.now());
+                cardKeyMapper.updateById(cardKey);
+            }
+
 
             // 更新订单状态和卡密信息
             order.setStatus(OrderStatus.SENT);
@@ -145,7 +148,12 @@ public class OrderProcessServiceImpl implements OrderProcessService {
         // 减少商品库存
         Goods goods = goodsMapper.selectById(order.getGdId());
         if (goods != null) {
-            goods.setStock(goods.getStock() - order.getNumber());
+            int newStock = goods.getStock() - order.getNumber();
+            goods.setStock(newStock);
+            // 当库存为0时自动下架商品
+            if (newStock <= 0) {
+                goods.setStatus(0);
+            }
             goodsMapper.updateById(goods);
         }
 

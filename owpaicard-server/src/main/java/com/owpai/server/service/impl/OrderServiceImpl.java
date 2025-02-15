@@ -7,6 +7,7 @@ import com.owpai.common.constant.MessageConstant;
 import com.owpai.common.exception.BusinessException;
 import com.owpai.common.exception.DeletionNotAllowedException;
 import com.owpai.common.exception.UpdateNotAllowedException;
+import com.owpai.common.utils.OrderNumberGenerator;
 import com.owpai.pojo.dto.OrderDTO;
 import com.owpai.pojo.entity.CardKey;
 import com.owpai.pojo.entity.Orders;
@@ -35,11 +36,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     public Orders add(OrderDTO orderDTO) {
         Orders orders = new Orders();
         BeanUtils.copyProperties(orderDTO, orders);
-        Orders.builder()
-                .totalPrice(orders.getPrice().multiply(BigDecimal.valueOf(orders.getNumber())))
-                .createTime(LocalDateTime.now())
-                .status(OrderStatus.PENDING)
-                .build();
+        //设置订单号
+        orders.setOrderNum(OrderNumberGenerator.generateOrderNumber());
+        orders.setTotalPrice(orders.getPrice().multiply(BigDecimal.valueOf(orders.getNumber())));
+        orders.setCreateTime(LocalDateTime.now());
+        orders.setStatus(OrderStatus.PENDING);
 
         orderMapper.insert(orders);
         return orders;
@@ -77,22 +78,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
             if (gdId == null) {
                 throw new BusinessException("订单商品信息不完整");
             }
-            
+
             // 查询一个未售出的且属于该订单商品的卡密
             CardKey cardKey = cardKeyMapper.selectOne(new LambdaQueryWrapper<CardKey>()
                     .eq(CardKey::getStatus, 0)
                     .eq(CardKey::getGdId, gdId)
                     .last("LIMIT 1"));
-            
+
             if (cardKey == null) {
                 throw new BusinessException("暂无可用卡密");
             }
-            
-            // 更新卡密状态为已售出
-            cardKey.setStatus(1);
-            cardKey.setUpdateTime(LocalDateTime.now());
-            cardKeyMapper.updateById(cardKey);
-            
+
+            // 如果是一次性卡密，更新状态为已售出
+            if (cardKey.getType() == 0) {
+                cardKey.setStatus(1);
+                cardKey.setUpdateTime(LocalDateTime.now());
+                cardKeyMapper.updateById(cardKey);
+            }
+
             // 将卡密ID关联到订单
             orders.setCardKeyId(cardKey.getId());
         }
@@ -137,5 +140,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
                 .eq(orderNum != null, Orders::getOrderNum, orderNum)
                 .one();
         return orders;
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrder(String orderNum) {
+        // 查询订单
+        Orders order = selectNumber(orderNum);
+        if (order == null) {
+            throw new BusinessException("订单不存在");
+        }
+
+        // 验证订单状态
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new BusinessException("只有待支付的订单可以取消");
+        }
+
+        // 更新订单状态为已取消
+        order.setStatus(OrderStatus.CANCEL);
+        order.setUpdateTime(LocalDateTime.now());
+        orderMapper.updateById(order);
     }
 }

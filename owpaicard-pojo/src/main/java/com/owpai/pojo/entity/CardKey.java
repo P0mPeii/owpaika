@@ -23,6 +23,8 @@ public class CardKey implements Serializable {
     private Integer status;
     private Integer loopKey;
     private String key;
+    //卡密类型。0一次性   1循环卡密
+    private Integer type;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

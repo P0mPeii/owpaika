@@ -29,9 +29,9 @@ public class CardKeyController {
      * 批量添加卡密
      */
     @PostMapping("/adds")
-    public Result batchAdd(@RequestBody String cardKeys) {
+    public Result batchAdd(@RequestBody String cardKeys,boolean removeDuplicates) {
         String[] keys = cardKeys.split("\n");
-        cardKeyService.batchAdd(keys);
+        cardKeyService.batchAdd(keys,removeDuplicates);
         return Result.success();
     }
 

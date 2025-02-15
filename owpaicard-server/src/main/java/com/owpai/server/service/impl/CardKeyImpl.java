@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CardKeyImpl extends ServiceImpl<CardKeyMapper, CardKey> implements CardKeyService {
@@ -65,7 +67,18 @@ public class CardKeyImpl extends ServiceImpl<CardKeyMapper, CardKey> implements 
     }
 
     @Override
-    public void batchAdd(String[] keys) {
+    public void batchAdd(String[] keys, boolean removeDuplicates) {
+        // 如果需要去重，使用Set集合存储唯一的卡密
+        if (removeDuplicates) {
+            Set<String> uniqueKeys = new HashSet<>();
+            for (String key : keys) {
+                if (key != null && !key.trim().isEmpty()) {
+                    uniqueKeys.add(key.trim());
+                }
+            }
+            keys = uniqueKeys.toArray(new String[0]);
+        }
+
         for (String key : keys) {
             if (key != null && !key.trim().isEmpty()) {
                 CardKey cardKey = new CardKey();

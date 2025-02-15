@@ -61,4 +61,11 @@ public class OrderController {
         Orders orders = orderService.selectNumber(orderNum);
         return Result.success(orders);
     }
+
+    @Operation(summary = "订单号取消订单", description = "根据订单号查询订单信息")
+    @PutMapping("/cancel")
+    public Result cancel(@Parameter(description = "订单号") String orderNum) {
+        orderService.cancelOrder(orderNum);
+        return Result.success();
+    }
 }

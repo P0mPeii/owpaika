@@ -21,4 +21,11 @@ public interface OrderService {
     List<Orders> selectEmail(String email);
 
     Orders selectNumber(String orderNum);
+
+    /**
+     * 取消订单
+     * 
+     * @param orderNum 订单号
+     */
+    void cancelOrder(String orderNum);
 }

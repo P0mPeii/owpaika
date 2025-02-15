@@ -9,6 +9,7 @@ import com.owpai.common.exception.SelectFailedException;
 import com.owpai.common.exception.UpdateNotAllowedException;
 import com.owpai.pojo.dto.GoodsDTO;
 import com.owpai.pojo.entity.Goods;
+import com.owpai.pojo.enums.OnOffStatus;
 import com.owpai.server.mapper.GoodsMapper;
 import com.owpai.server.service.GoodsService;
 import org.springframework.beans.BeanUtils;
@@ -89,9 +90,11 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     @Cacheable(key = "'goods_' + #page + '_' + #pageSize")
-    public Page<Goods> pageQuery(Integer page, Integer pageSize) {
+    public Page<Goods> pageQuery(OnOffStatus onOffStatus, Integer page, Integer pageSize) {
         Page<Goods> pageInfo = new Page<>(page, pageSize);
+
         return lambdaQuery()
+                .eq(onOffStatus == OnOffStatus.ON, Goods::getStatus, 1) // 当状态为ON时只查询上架商品
                 .orderByDesc(Goods::getCreateTime)
                 .page(pageInfo);
     }
