@@ -36,7 +36,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     public Orders add(OrderDTO orderDTO) {
         Orders orders = new Orders();
         BeanUtils.copyProperties(orderDTO, orders);
-        //设置订单号
+        // 设置订单号
         orders.setOrderNum(OrderNumberGenerator.generateOrderNumber());
         orders.setTotalPrice(orders.getPrice().multiply(BigDecimal.valueOf(orders.getNumber())));
         orders.setCreateTime(LocalDateTime.now());
@@ -119,7 +119,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     @Override
     public Page<Orders> pageQuery(Integer page, Integer pageSize) {
-        Page<Orders> pageInfo = new Page<>();
+        Page<Orders> pageInfo = new Page<>(page,pageSize);
         return lambdaQuery()
                 .orderByDesc(Orders::getUpdateTime)
                 .page(pageInfo);
@@ -160,5 +160,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         order.setStatus(OrderStatus.CANCEL);
         order.setUpdateTime(LocalDateTime.now());
         orderMapper.updateById(order);
+    }
+
+    @Override
+    public List<Orders> getOrdersForExport(LocalDateTime startTime, LocalDateTime endTime, OrderStatus status) {
+        return lambdaQuery()
+                .ge(startTime != null, Orders::getCreateTime, startTime)
+                .le(endTime != null, Orders::getCreateTime, endTime)
+                .eq(status != null, Orders::getStatus, status)
+                .orderByDesc(Orders::getUpdateTime)
+                .list();
     }
 }
