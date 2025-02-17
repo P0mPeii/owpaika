@@ -7,10 +7,16 @@ target/
 
 # Configuration files
 /owpaicard-server/src/main/resources/application.yml
+/owpaicard-server/src/main/resources/application-*.yml
+.env
 
 # Build output
 /target/
 /*/target/
 /**/target/
 /**/target/classes/
+
+# Data directories
+/mysql_data/
+/redis_data/
 
