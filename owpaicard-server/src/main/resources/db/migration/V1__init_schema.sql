@@ -1,4 +1,3 @@
-
 CREATE TABLE `admin`
 (
     `id`          bigint(20)                             NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -12,7 +11,6 @@ CREATE TABLE `admin`
   AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT ='管理员表';
-
 
 
 
@@ -122,3 +120,71 @@ CREATE TABLE `orders`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT ='订单表';
+
+
+CREATE TABLE pay_info
+(
+    -- 主键ID,使用自增
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- 支付名称,最大长度200个字符
+    pay_name      VARCHAR(200) NOT NULL,
+
+    -- 支付标识,最大长度50个字符
+    pay_check     VARCHAR(50)  NOT NULL,
+
+    -- 支付方式(1:跳转 2:扫码)
+    pay_method    TINYINT(1)   NOT NULL,
+
+    -- 支付场景(1:电脑pc 2:手机 3:全部),默认值为1
+    pay_client    TINYINT(1)   NOT NULL DEFAULT 1,
+
+    -- 商户ID,可以为空
+    merchant_id   VARCHAR(200) NULL,
+
+    -- 商户KEY,可以为空
+    merchant_key  TEXT         NULL,
+
+    -- 商户密钥
+    merchant_pem  TEXT         NOT NULL,
+
+    -- 支付处理路径,最大长度200个字符
+    callback_path VARCHAR(200) NOT NULL,
+
+    -- 是否启用(1:是 0:否),默认值为1
+    is_open       TINYINT(1)   NOT NULL DEFAULT 1,
+
+    -- 创建时间,可以为空
+    created_time  TIMESTAMP    NULL,
+
+    -- 更新时间,可以为空
+    updated_time  TIMESTAMP    NULL,
+
+    -- 删除时间,可以为空
+    deleted_time  TIMESTAMP    NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT ='支付方式表';
+
+
+INSERT INTO pay_info (pay_name,
+                      pay_check,
+                      pay_method,
+                      pay_client,
+                      merchant_id,
+                      merchant_key,
+                      merchant_pem,
+                      callback_path,
+                      is_open,
+                      created_time)
+VALUES ('支付宝PC支付', -- 支付名称：清晰地表明这是支付宝的PC端支付
+        'alipay_pc', -- 支付标识：使用简单的英文标识，方便系统识别
+        1, -- 支付方式：1表示跳转支付，适合支付宝PC支付场景
+        1, -- 支付场景：1表示PC端
+        '2088101123456789', -- 商户ID：这是示例的支付宝商户号
+        '私钥', -- 商户KEY：示例的支付宝应用私钥
+        '私钥', -- 商户密钥：RSA格式的私钥（示例）
+        '回调接口路径', -- 支付处理路由：处理支付宝回调的接口路径
+        1, -- 是否启用：1表示启用
+        NOW() -- 创建时间：使用当前时间
+       );

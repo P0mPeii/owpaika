@@ -1,4 +1,4 @@
-package com.owpai.server.service;
+package com.owpai.server.service.impl;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
@@ -24,13 +24,13 @@ public class AlipayService {
      *
      * @param outTradeNo  商户订单号
      * @param totalAmount 订单总金额
-     *                    subject 订单标题
+     * @param subject     订单标题
      * @return 支付宝预下单响应
      */
     public AlipayTradePrecreateResponse createPrePayOrder(String outTradeNo,
-            String totalAmount,
-            String subject,
-            String timeoutExpress) throws AlipayApiException {
+                                                          String totalAmount,
+                                                          String subject,
+                                                          String timeoutExpress) throws AlipayApiException {
         // 创建API对应的request类
         AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
 

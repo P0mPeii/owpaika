@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/admin/dashboard/order")
+@RequestMapping("/admin/dashboard")
 @RequiredArgsConstructor
 public class OrderDashboardController {
 
@@ -23,13 +23,13 @@ public class OrderDashboardController {
      *
      * @return 包含今日、近一周、近一月、近一年的订单统计数据
      */
-    @GetMapping
+    @GetMapping("/get")
     public Result<OrderDashboardTimeVO> getOrderDashboardData() {
         OrderDashboardTimeVO orderDashboardData = orderDashboardService.getOrderDashboardData();
         return Result.success(orderDashboardData);
     }
 
-    @GetMapping("/getVO")
+    @GetMapping("/get_vo")
     public Result<OrderDashboardVO> getOrderDashboardVO(LocalDateTime startTime, LocalDateTime endTime) {
         OrderDashboardVO orderDashboardVO = orderDashboardService.getOrderDashboardVO(startTime,endTime);
         return Result.success(orderDashboardVO);

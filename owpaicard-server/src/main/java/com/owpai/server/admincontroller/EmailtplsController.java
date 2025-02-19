@@ -42,7 +42,7 @@ public class EmailtplsController {
     }
 
     @Operation(summary = "分页查询模板", description = "分页查询邮件模板列表")
-    @GetMapping
+    @GetMapping("/page")
     public Result<Page> list(
             @Parameter(description = "页码") Integer page,
             @Parameter(description = "每页记录数") Integer pageSize) {
@@ -51,8 +51,8 @@ public class EmailtplsController {
     }
 
     @Operation(summary = "查询模板", description = "根据ID查询邮件模板详细信息")
-    @GetMapping("/{id}")
-    public Result<Emailtpls> select(@Parameter(description = "模板ID") @PathVariable Long id) {
+    @GetMapping("/select")
+    public Result<Emailtpls> select(@Parameter(description = "模板ID") @RequestParam Long id) {
         Emailtpls emailtpls = emailtplsService.select(id);
         return Result.success(emailtpls);
     }

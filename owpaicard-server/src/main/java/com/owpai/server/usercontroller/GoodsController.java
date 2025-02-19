@@ -22,25 +22,26 @@ public class GoodsController {
     private GoodsService goodsService;
 
     @Operation(summary = "查询商品", description = "根据ID查询商品详细信息")
-    @GetMapping("/select/{id}")
-    public Result<Goods> select(@Parameter(description = "商品ID") @PathVariable Long id) {
+    @GetMapping("/select")
+    public Result<Goods> select(@Parameter(description = "商品ID") @RequestParam(required = true) Long id) {
         Goods goods = goodsService.selectById(id);
         return Result.success(goods);
     }
 
     @Operation(summary = "分类商品列表", description = "根据分类ID查询商品列表")
     @GetMapping("/list")
-    public Result<List<Goods>> selectById(@Parameter(description = "分类ID") Long categoryId) {
+    public Result<List<Goods>> selectById(@Parameter(description = "分类ID") @RequestParam(required = true) Long categoryId) {
         List<Goods> list = goodsService.list(categoryId);
         return Result.success(list);
     }
 
-    @Operation(summary = "分页查询商品", description = "分页查询商品列表")
-    @GetMapping
+    @Operation(summary = "分页查询商品", description = "分页查询商品列表，支持按分类筛选")
+    @GetMapping("/page")
     public Result<Page> page(
-            @Parameter(description = "页码") Integer page,
-            @Parameter(description = "每页记录数") Integer pageSize) {
-        Page<Goods> pageResult = goodsService.pageQuery(OnOffStatus.ON,page, pageSize);
+            @Parameter(description = "页码") @RequestParam(defaultValue = "1") Integer page,
+            @Parameter(description = "每页记录数") @RequestParam(defaultValue = "10") Integer pageSize,
+            @Parameter(description = "分类ID") Long categoryId) {
+        Page<Goods> pageResult = goodsService.pageQuery(OnOffStatus.ON, page, pageSize, categoryId);
         return Result.success(pageResult);
     }
 

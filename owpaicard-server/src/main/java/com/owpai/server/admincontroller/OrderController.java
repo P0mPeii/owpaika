@@ -28,14 +28,14 @@ public class OrderController {
     private OrderService orderService;
 
     @Operation(summary = "新增订单", description = "创建新的订单信息")
-    @PostMapping("/order/add")
+    @PostMapping("/add")
     public Result add(@RequestBody OrderDTO orderDTO) {
         orderService.add(orderDTO);
         return Result.success();
     }
 
     @Operation(summary = "删除订单", description = "根据ID删除订单信息")
-    @DeleteMapping("/admin/order/delete")
+    @DeleteMapping("/delete")
     public Result delete(@Parameter(description = "订单ID") @RequestBody Long id) {
         orderService.delete(id);
         return Result.success();
@@ -49,14 +49,14 @@ public class OrderController {
     }
 
     @Operation(summary = "邮箱查询订单", description = "根据邮箱查询订单列表")
-    @GetMapping("/selectEmail")
+    @GetMapping("/email_select")
     public Result<List<Orders>> selectEmail(@Parameter(description = "邮箱地址") String email) {
         List<Orders> list = orderService.selectEmail(email);
         return Result.success(list);
     }
 
     @Operation(summary = "订单号查询订单", description = "根据订单号查询订单信息")
-    @GetMapping("/order/selectNumber")
+    @GetMapping("/order_num_select")
     public Result<Orders> selectNumber(@Parameter(description = "订单号") String orderNum) {
         Orders orders = orderService.selectNumber(orderNum);
         return Result.success(orders);
@@ -65,7 +65,7 @@ public class OrderController {
     @Operation(summary = "更改订单状态", description = "更新订单的状态信息")
     @PutMapping("/status")
     public Result status(@Parameter(description = "订单状态") @RequestBody OrderStatus status,
-            @Parameter(description = "订单ID") @RequestBody Long id) {
+                         @Parameter(description = "订单ID") @RequestBody Long id) {
         orderService.update(status, id);
         return Result.success();
     }
@@ -73,7 +73,7 @@ public class OrderController {
     @Operation(summary = "分页查询订单", description = "管理员分页查询订单列表")
     @GetMapping("/page")
     public Result<Page> page(@Parameter(description = "页码") Integer page,
-            @Parameter(description = "每页记录数") Integer pageSize) {
+                             @Parameter(description = "每页记录数") Integer pageSize) {
         Page<Orders> list = orderService.pageQuery(page, pageSize);
         return Result.success(list);
     }

@@ -18,7 +18,7 @@ CREATE TABLE `admin`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT ='管理员表';
 
-INSERT INTO admin (username, password) 
+INSERT INTO admin (username, password)
 VALUES ('admin', MD5('123456'));
 
 
@@ -128,3 +128,36 @@ CREATE TABLE `orders`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT ='订单表';
+
+
+CREATE TABLE IF NOT EXISTS `pay_info`
+(
+    `id`                bigint       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `server_url`        varchar(255) NOT NULL COMMENT '支付宝网关',
+    `app_id`            varchar(255) NOT NULL COMMENT '应用ID',
+    `private_key`       text         NOT NULL COMMENT '应用私钥',
+    `alipay_public_key` text         NOT NULL COMMENT '支付宝公钥',
+    `charset`           varchar(10)  NOT NULL DEFAULT 'UTF-8' COMMENT '字符编码',
+    `format`            varchar(10)  NOT NULL DEFAULT 'json' COMMENT '格式',
+    `sign_type`         varchar(10)  NOT NULL DEFAULT 'RSA2' COMMENT '签名方式',
+    `return_url`        varchar(255) NOT NULL COMMENT '同步回调地址',
+    `notify_url`        varchar(255) NOT NULL COMMENT '异步通知地址',
+    `create_time`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT ='支付配置信息表';
+
+-- 插入默认配置
+INSERT INTO `pay_info` (`server_url`, `app_id`, `private_key`, `alipay_public_key`,
+                        `charset`, `format`, `sign_type`, `return_url`, `notify_url`)
+VALUES ('https://openapi.alipay.com/gateway.do',
+        'your_app_id',
+        'your_private_key',
+        'your_alipay_public_key',
+        'UTF-8',
+        'json',
+        'RSA2',
+        'http://your-domain/return',
+        'http://your-domain/notify');

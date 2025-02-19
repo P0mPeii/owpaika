@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "支付通知接口", description = "处理支付平台异步通知")
 @RestController
-@RequestMapping("/payment/notify")
+@RequestMapping("/payment")
 @Slf4j
 public class PaymentNotifyController {
 
@@ -22,7 +22,7 @@ public class PaymentNotifyController {
     private OrderProcessService orderProcessService;
 
     @Operation(summary = "支付结果通知", description = "接收支付平台的异步通知")
-    @PostMapping
+    @PostMapping("/notify")
     public Result handlePaymentNotify(
             @Parameter(description = "订单号") @RequestParam String orderNum,
             @Parameter(description = "支付金额") @RequestParam Double payAmount,

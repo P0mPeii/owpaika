@@ -18,7 +18,7 @@ public interface GoodsService {
 
     List<Goods> list(Long categoryId);
 
-    Page<Goods> pageQuery(OnOffStatus onOffStatus, Integer page, Integer pageSize);
+    Page<Goods> pageQuery(OnOffStatus onOffStatus, Integer page, Integer pageSize, Long categoryId);
 
     void updateStatus(Integer status, Long id);
 }

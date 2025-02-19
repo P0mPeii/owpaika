@@ -16,7 +16,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +28,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Autowired
     private GoodsMapper goodsMapper;
+
 
     @Override
     @CacheEvict(allEntries = true)
@@ -89,12 +89,13 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    @Cacheable(key = "'goods_' + #page + '_' + #pageSize")
-    public Page<Goods> pageQuery(OnOffStatus onOffStatus, Integer page, Integer pageSize) {
+    @Cacheable(key = "'goods_' + #page + '_' + #pageSize + '_' + #categoryId")
+    public Page<Goods> pageQuery(OnOffStatus onOffStatus, Integer page, Integer pageSize, Long categoryId) {
         Page<Goods> pageInfo = new Page<>(page, pageSize);
 
         return lambdaQuery()
                 .eq(onOffStatus == OnOffStatus.ON, Goods::getStatus, 1) // 当状态为ON时只查询上架商品
+                .eq(categoryId != null, Goods::getCategoryId, categoryId) // 根据分类ID筛选
                 .orderByDesc(Goods::getCreateTime)
                 .page(pageInfo);
     }

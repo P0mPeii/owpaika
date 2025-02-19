@@ -29,8 +29,8 @@ public class GoodsController {
     }
 
     @Operation(summary = "删除商品", description = "根据ID删除商品信息")
-    @DeleteMapping("/delete/{id}")
-    public Result delete(@Parameter(description = "商品ID") @PathVariable Long id) {
+    @DeleteMapping("/delete")
+    public Result delete(@Parameter(description = "商品ID") @RequestParam Long id) {
         goodsService.delete(id);
         return Result.success();
     }
@@ -43,8 +43,8 @@ public class GoodsController {
     }
 
     @Operation(summary = "查询商品", description = "根据ID查询商品详细信息")
-    @GetMapping("/select/{id}")
-    public Result<Goods> select(@Parameter(description = "商品ID") @PathVariable Long id) {
+    @GetMapping("/select")
+    public Result<Goods> select(@Parameter(description = "商品ID")  Long id) {
         Goods goods = goodsService.selectById(id);
         return Result.success(goods);
     }
@@ -57,18 +57,19 @@ public class GoodsController {
     }
 
     @Operation(summary = "分页查询商品", description = "分页查询商品列表")
-    @GetMapping
+    @GetMapping("/page")
     public Result<Page> page(
-            @Parameter(description = "页码") Integer page,
-            @Parameter(description = "每页记录数") Integer pageSize) {
-        Page<Goods> pageResult = goodsService.pageQuery(OnOffStatus.ALL,page, pageSize);
+            @Parameter(description = "页码")@RequestParam Integer page,
+            @Parameter(description = "每页记录数")@RequestParam Integer pageSize,
+            @Parameter(description = "种类id")@RequestParam(required = false) Long categoryId) {
+        Page<Goods> pageResult = goodsService.pageQuery(OnOffStatus.ALL,page, pageSize,categoryId);
         return Result.success(pageResult);
     }
 
     @Operation(summary = "更新商品状态", description = "启用或禁用商品")
-    @PutMapping("/status/{status}")
+    @PutMapping("/status")
     public Result status(
-            @Parameter(description = "商品状态") @PathVariable Integer status,
+            @Parameter(description = "商品状态")  Integer status,
             @Parameter(description = "商品ID") Long id) {
         goodsService.updateStatus(status, id);
         return Result.success();
