@@ -29,8 +29,9 @@ public class GlobalExceptionHandler {
         }else{
             return Result.error(MessageConstant.UNKNOWN_ERROR);
         }
-
     }
+
+
 
 //    @ExceptionHandler(BusinessException.class)
 //    public Result<String> handleBusinessException(BusinessException e) {

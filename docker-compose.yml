@@ -1,4 +1,3 @@
-
 services:
   # Spring Boot 应用服务
   app:
@@ -9,31 +8,66 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/owpaicard?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/owpaicard?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - SPRING_DATASOURCE_PASSWORD=123456
       - SPRING_REDIS_HOST=redis
+      # 邮件配置
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=465
+      - SPRING_MAIL_USERNAME=your_mail_username
+      - SPRING_MAIL_PASSWORD=your_mail_password
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_ENABLE=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_REQUIRED=true
+      - SPRING_MAIL_PROPERTIES_MAIL_TRANSPORT_PROTOCOL=smtps
+      # 支付宝配置
+      - ALIPAY_SERVER_URL=https://openapi.alipay.com/gateway.do
+      - ALIPAY_APP_ID=your_app_id
+      - ALIPAY_MERCHANT_PRIVATE_KEY=your_private_key
+      - ALIPAY_ALIPAY_PUBLIC_KEY=your_alipay_public_key
+      - ALIPAY_NOTIFY_URL=http://your-domain/notify
+      - ALIPAY_RETURN_URL=http://your-domain/return
+      - ALIPAY_SIGN_TYPE=RSA2
+      - ALIPAY_CHARSET=utf-8
+      - ALIPAY_FORMAT=json
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    #不重启
+    restart: no
 
   # MySQL服务
   mysql:
     image: mysql:8.0
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=owpaicard
     ports:
-      - "3306:3306"
+      - "13306:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
       - ./init-sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: no
 
   # Redis服务
   redis:
-    image: redis:6.2
+    image: redis:7.2
     ports:
-      - "6379:6379"
+      - "16379:6379"
     volumes:
       - ./redis_data:/data
-
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: no

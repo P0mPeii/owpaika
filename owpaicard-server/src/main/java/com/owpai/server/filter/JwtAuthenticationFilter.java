@@ -29,24 +29,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtProperties jwtProperties;
 
     /**
-     * 过滤器核心处理方法
-     * 
-     * @param request     HTTP请求对象
-     * @param response    HTTP响应对象
-     * @param filterChain 过滤器链
-     * @throws ServletException Servlet异常
-     * @throws IOException      IO异常
+     * 判断是否需要过滤的路径
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException
-    {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.startsWith("/swagger-ui/") ||
+                path.startsWith("/v3/api-docs") ||
+                path.startsWith("/swagger-ui.html") ||
+                path.startsWith("/auth/");
+    }
 
-        // 从请求头中获取token
-        String token = request.getHeader(jwtProperties.getAdminTokenName());
+    /**
+     * 过滤器核心处理方法
+     */
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        try {
+            // 从请求头中获取token
+            String token = request.getHeader(jwtProperties.getAdminTokenName());
 
-        if (token != null && !token.isEmpty()) {
-            try {
+            if (token != null && !token.isEmpty()) {
                 // 解析JWT令牌
                 Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
                 // 从令牌中获取管理员ID
@@ -61,9 +66,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 // 将认证信息存入SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (Exception e) {
-                // Token解析失败，不设置认证信息，继续处理请求
             }
+        } catch (Exception e) {
+            // Token解析失败，不设置认证信息，继续处理请求
+            logger.debug("JWT token processing failed", e);
         }
 
         // 继续执行过滤器链

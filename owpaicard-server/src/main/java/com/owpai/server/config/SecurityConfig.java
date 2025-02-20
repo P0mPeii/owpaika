@@ -40,6 +40,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // 登录接口允许匿名访问
                         .requestMatchers("/admin/login").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
+                        // 其他需要放行的路径
+                        .requestMatchers("/auth/**").permitAll()
                         // admin路径下的其他接口需要认证
                         .requestMatchers("/admin/**").authenticated()
                         // 其他请求都允许访问

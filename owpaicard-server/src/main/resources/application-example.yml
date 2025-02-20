@@ -1,14 +1,64 @@
 server:
   port: 8080
+  tomcat:
+    connection-timeout: 10000  # 连接超时时间，单位毫秒
+
+http:
+  client:
+    timeout: 10000            # 全局HTTP请求超时时间，单位毫秒
+    connect-timeout: 10000    # HTTP连接超时时间，单位毫秒
 
 spring:
   application:
     name: owpaicard-server
 
+  flyway:
+    # 启用 Flyway
+    enabled: true
+    # 迁移脚本的位置，可以指定多个位置
+    locations:
+      - classpath:db/migration
+      - classpath:db/callback
+    # 迁移历史表名，默认为 flyway_schema_history
+    table: flyway_schema_history
+    # 如果数据库不是空的，需要设置基线版本
+    baseline-on-migrate: true
+    baseline-version: 0
+    # 在迁移时校验
+    validate-on-migrate: true
+    # 禁止清理数据库表
+    clean-disabled: true
+    # 配置 SQL 文件的编码
+    encoding: UTF-8
+    # 当迁移时发现目标 schema 非空，而且带有没有元数据的表时，是否自动执行基准迁移
+    baseline-description: "init"
+    # 是否允许无序迁移
+    out-of-order: false
+    # 设置为 true 后，当迁移发现数据库非空且存在没有元数据的表时，会自动执行基准迁移
+    mixed: true
+
+  # 邮件配置
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: your_email@gmail.com
+    password: your_app_password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          starttls:
+            enable: true
+            required: true
+        transport:
+          protocol: smtps
+
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/your_database?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://mysql:3306/owpaicard?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: your_username
     password: your_password
 
